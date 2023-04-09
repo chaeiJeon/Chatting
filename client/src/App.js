@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Reset } from "styled-reset";
+import { Greeting } from "./components/Greeting";
+import { Chatting } from "./components/Chatting";
 import socket from "./socket";
+import { userList } from "./socket";
+import { GlobalStyle } from "./reset";
 function App() {
-  const [username, setUserName] = useState("");
+  const [userL, setUserL] = useState([]);
+  socket.on("users", (users) => {
+    console.log(users);
+    setUserL(users);
+  });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const newUsername = event.target.elements.username.value;
-    setUserName(newUsername);
-    socket.auth = { username };
-    console.log(socket.auth);
-
-    socket.connect();
-  };
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input name="username" placeholder="name" />
-        <button type="submit">submit</button>
-      </form>
+      <GlobalStyle />
+      <Reset />
+      <Greeting />
+      <Chatting />
     </div>
   );
 }
