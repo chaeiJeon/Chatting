@@ -13,7 +13,8 @@ app.use(cors(corsOptions));
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
+    credential: true,
   },
 });
 io.on("connection", (socket) => {
@@ -30,8 +31,23 @@ io.on("connection", (socket) => {
     userID: socket.id,
     username: socket.username,
   });
-  // ...
+  socket.on("private message", ({ message, to }) => {
+    console.log(message, "=>", to);
+    socket.to(to).emit("private message", {
+      message,
+      from: socket.id,
+    });
+  });
+  socket.on("disconnect", () => {
+    console.log("disconnect ");
+    users.forEach((user) => {
+      if (user.self) {
+        user.connected = false;
+      }
+    });
+  });
 });
+
 io.use((socket, next) => {
   const username = socket.handshake.auth.username;
   if (!username) {
