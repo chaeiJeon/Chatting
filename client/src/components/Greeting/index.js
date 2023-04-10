@@ -34,10 +34,11 @@ export const Greeting = () => {
             onChange={(event) => handleChangeInput(event)}
             autoComplete="off"
           />
-          <Link to="chatting" spy={true} smooth={true}>
-            <SubmitButton type="submit">submit</SubmitButton>
-          </Link>
+          {/* <Link to="chatting" spy={true} smooth={true}> */}
+          <SubmitButton type="submit">submit</SubmitButton>
+          {/* </Link> */}
         </form>
+        <div>{}</div>
       </GreetingContainer>
     </>
   );

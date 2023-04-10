@@ -17,7 +17,7 @@ function App() {
       <GlobalStyle />
       <Reset />
       <Greeting />
-      <Chatting />
+      <Chatting userL={userL} />
     </div>
   );
 }
