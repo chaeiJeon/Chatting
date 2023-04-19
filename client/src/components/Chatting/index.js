@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import socket from "../../socket";
+import { webSocket, s_send } from "../../socket";
 import {
   ChattingContainer,
   InputContainer,
@@ -13,13 +13,19 @@ export const Chatting = ({ userL }) => {
   const handleChangeMessage = (event) => {
     setMessage(event.target.value);
   };
+  useEffect(() => {
+    webSocket.onmessage = (event) => {
+      console.log("eeve! ", event.data);
+      let _m = event.data;
+      for (let value of JSON.parse(event.data)) {
+        const { sender, recipient, message } = JSON.parse(value);
+        console.log(sender, " > ", recipient, " : ", message);
+      }
+      //   setMessage(_m);
+    };
+  }, [webSocket]);
   const onMessage = () => {
-    console.log(selectedUser);
-    console.log(message);
-    socket.emit("private message", {
-      message,
-      to: selectedUser.userID,
-    });
+    s_send(message);
   };
   const random = () => {
     console.log("in random ", userL);
@@ -28,6 +34,7 @@ export const Chatting = ({ userL }) => {
   return (
     <>
       <ChattingContainer id="chatting">
+        {message}
         <button onClick={random}>랜덤 선택 시작</button>
         <InputContainer>
           <Input
