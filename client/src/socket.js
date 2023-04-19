@@ -1,34 +1,21 @@
-import { io, Socket } from "socket.io-client";
+export const webSocket = new WebSocket("ws://localhost:1234/ws");
 
-const URL = "http://localhost:8080";
-const socket = io(URL, { autoConnect: false });
-export let userList;
-
-socket.onAny((event, ...args) => {
-  console.log(event, args);
-});
-socket.on("connect_error", (err) => {
-  if (err.message === "invalid username") {
-    console.log("invalid username");
+export const s_send = (data) => {
+  if (webSocket.readyState === webSocket.OPEN) {
+    // 연결 상태 확인
+    console.log("client data : ", data);
+    webSocket.send(data); // 웹소켓 서버에게 메시지 전송
+  } else {
+    alert("연결된 웹소켓 서버가 없습니다.");
   }
-});
-socket.on("users", (users) => {
-  users.forEach((user) => {
-    user.self = user.userID === socket.id;
-  });
-  userList = users.sort((a, b) => {
-    if (a.self) return -1;
-    if (b.self) return 1;
-    if (a.username < b.username) return -1;
-    return a.username > b.username ? 1 : 0;
-  });
-});
-socket.on("user connected", (user) => {
-  userList.push(user);
-  console.log("userconnected!~");
-  console.log(userList);
-});
-socket.on("private message", ({ message, from }) => {
-  console.log(message, from);
-});
-export default socket;
+};
+
+// 3-2) 웹소켓 서버와 연결 끊기
+export const s_close = () => {
+  if (webSocket.readyState === webSocket.OPEN) {
+    // 연결 상태 확인
+    webSocket.close(); // 연결 종료
+  } else {
+    alert("연결된 웹소켓 서버가 없습니다.");
+  }
+};
