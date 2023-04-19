@@ -1,6 +1,8 @@
 const http = require("http");
 const express = require("express");
 const cors = require("cors");
+const WebSocketS = require("ws").Server;
+const clients = require("./clients");
 
 const app = express();
 const port = 8080;
@@ -10,53 +12,41 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+//redis
+const channelName = "chatroom1";
+const { _connect, _publish, _subscribe } = require("./redis");
+
+_connect();
+_publish(channelName, "publish message");
+_subscribe(channelName);
+//
+
 const httpServer = require("http").createServer(app);
-const io = require("socket.io")(httpServer, {
-  cors: {
-    origin: "*",
-    credential: true,
-  },
-});
-io.on("connection", (socket) => {
-  const users = [];
-  for (let [id, socket] of io.of("/").sockets) {
-    users.push({
-      userID: id,
-      username: socket.username,
-    });
-  }
-  socket.emit("users", users);
-  // notify existing users
-  socket.broadcast.emit("user connected", {
-    userID: socket.id,
-    username: socket.username,
-  });
-  socket.on("private message", ({ message, to }) => {
-    console.log(message, "=>", to);
-    socket.to(to).emit("private message", {
-      message,
-      from: socket.id,
-    });
-  });
-  socket.on("disconnect", () => {
-    console.log("disconnect ");
-    users.forEach((user) => {
-      if (user.self) {
-        user.connected = false;
-      }
-    });
-  });
-});
 
-io.use((socket, next) => {
-  const username = socket.handshake.auth.username;
-  if (!username) {
-    return next(new Error("invalid username"));
-  }
-  socket.username = username;
-  next();
-});
+//socket
 
+socketPort = 1234;
+wss = null;
+wss = new WebSocketS({ port: socketPort }); // 내가 설정한 port로 websocket 서버를 연다
+wss.on("connection", (ws, req) => {
+  clients.push(ws);
+  console.log("Connected total:", clients.length);
+
+  ws.on("message", (_message) => {
+    _message = _message.toString();
+    _publish(channelName, _message);
+    for (const client of clients) {
+      client.send(_message);
+    }
+  });
+});
+//
 httpServer.listen(port, () => {
   console.log(`socket.io server listening at http://localhost:${port}`);
+});
+wss.on("close", function (error) {
+  console.log("websever close", error);
+});
+wss.on("error", function (error) {
+  console.log(error);
 });
