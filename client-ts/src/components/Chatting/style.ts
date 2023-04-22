@@ -47,3 +47,19 @@ export const SubmitButton = styled.button`
   padding-top: 3px;
   font-weight: bold;
 `;
+export const MessageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+export const Message = styled.div`
+  width: 100%;
+  color: white;
+`;
+export const SentMessage = styled(Message)`
+  text-align: right;
+`;
+export const ReceivedMessage = styled(Message)`
+  text-align: left;
+`;

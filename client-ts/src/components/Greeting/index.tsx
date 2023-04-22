@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-scroll";
-import { socket } from "../../socket";
 import {
   GreetingContainer,
   GreetingText,
@@ -10,12 +8,12 @@ import {
 
 export const Greeting = () => {
   const [username, setUserName] = useState("");
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     // event.preventDefault();
     // socket.auth = { username };
     // socket.connect();
   };
-  const handleChangeInput = (event) => {
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     // setUserName(event.target.value);
   };
   return (
