@@ -17,7 +17,6 @@ const channelName = "chatroom1";
 const { _connect, _publish, _subscribe } = require("./redis");
 
 _connect();
-_publish(channelName, "publish message");
 _subscribe(channelName);
 //
 
@@ -34,10 +33,8 @@ wss.on("connection", (ws, req) => {
 
   ws.on("message", (_message) => {
     _message = _message.toString();
+    console.log("received message : ", _message);
     _publish(channelName, _message);
-    for (const client of clients) {
-      client.send(_message);
-    }
   });
 });
 //

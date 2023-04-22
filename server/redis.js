@@ -18,13 +18,17 @@ const _connect = async () => {
   await redisClient.connect();
 };
 const _publish = async (channel, message) => {
+  message = setMessageFormat(message);
   await publisher.publish(channel, message);
 };
 const _subscribe = async (channelName) => {
   await subscriber_1.subscribe(channelName, async (_message) => {
-    _message = sendMessageFormat(_message); //포맷에 맞게 메시지 변환
     _pushMessageHistory(_message, channelName); //history에 메시지 push
-    sendMessageClient(channelName); //client에 메시지 history 전달
+    console.log("sub message : ", _message);
+    for (const client of clients) {
+      client.send(_message);
+    }
+    // sendMessageClient(channelName); //client에 메시지 history 전달
   });
 };
 const _pushMessageHistory = async (message, channelName) => {
@@ -41,14 +45,14 @@ const sendMessageClient = async (channelName) => {
     client.send(messageHistory);
   }
 };
-const sendMessageFormat = (message) => {
+const setMessageFormat = (message) => {
   const currentTime = new Date();
-  const sender = "server";
-  const recipient = "client";
+  const sender = "chaei";
+  const receiver = "sungho";
   const result = JSON.stringify({
     sender,
-    recipient,
-    message,
+    receiver,
+    contents: message,
     currentTime,
   });
   return result;
