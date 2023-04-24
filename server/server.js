@@ -10,20 +10,18 @@ const corsOptions = {
   origin: "*",
   credential: true,
 };
+app.use(express.json());
 app.use(cors(corsOptions));
+app.listen(port);
 
 //redis
 const channelName = "chatroom1";
-const { _connect, _publish, _subscribe } = require("./redis");
+const { _connect, _publish, _subscribe, setSender } = require("./redis");
 
 _connect();
 _subscribe(channelName);
-//
-
-const httpServer = require("http").createServer(app);
 
 //socket
-
 socketPort = 1234;
 wss = null;
 wss = new WebSocketS({ port: socketPort }); // 내가 설정한 port로 websocket 서버를 연다
@@ -37,13 +35,15 @@ wss.on("connection", (ws, req) => {
     _publish(channelName, _message);
   });
 });
-//
-httpServer.listen(port, () => {
-  console.log(`socket.io server listening at http://localhost:${port}`);
-});
 wss.on("close", function (error) {
   console.log("websever close", error);
 });
 wss.on("error", function (error) {
   console.log(error);
+});
+
+//api
+app.post("/username", (req, res) => {
+  let { user } = req.body;
+  setSender(user);
 });

@@ -11,7 +11,15 @@ const publisher = redis.createClient(config);
 const subscriber = redis.createClient(config);
 const subscriber_1 = subscriber.duplicate();
 const redisClient = redis.createClient(config); //store chat history
+let sender = "";
+let receiver = "";
 
+const setSender = (name) => {
+  sender = name;
+};
+const setReceiver = (name) => {
+  receiver = name;
+};
 const _connect = async () => {
   await publisher.connect();
   await subscriber_1.connect();
@@ -47,8 +55,6 @@ const sendMessageClient = async (channelName) => {
 };
 const setMessageFormat = (message) => {
   const currentTime = new Date();
-  const sender = "chaei";
-  const receiver = "sungho";
   const result = JSON.stringify({
     sender,
     receiver,
@@ -58,6 +64,8 @@ const setMessageFormat = (message) => {
   return result;
 };
 module.exports = {
+  setSender,
+  setReceiver,
   _connect,
   _publish,
   _subscribe,

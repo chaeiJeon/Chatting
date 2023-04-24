@@ -9,12 +9,15 @@ import {
   SentMessage,
 } from "./style";
 
+type ChattingType = {
+  user: string;
+};
 type MessageType = {
   sender: string;
   receiver: string;
   contents: string;
 };
-export const Chatting = () => {
+export const Chatting = ({ user }: ChattingType) => {
   const [input, setInput] = useState("");
   const [messageList, setMessageList] = useState<MessageType[]>([]);
   const [selectedUser, setSelectedUser] = useState({});
@@ -22,7 +25,6 @@ export const Chatting = () => {
     setInput(event.target.value);
   };
   useEffect(() => {
-    // 메시지를 받을 때 웹소켓 상대방것만 받아야 하는데 본인이 보낸 웹소켓 메시지도 읽는 것 같음
     webSocket.onmessage = (event) => {
       console.log("onmessage : ", event.data);
       setMessageList((prev) => [...prev, JSON.parse(event.data)]);

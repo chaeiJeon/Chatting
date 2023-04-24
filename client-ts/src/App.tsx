@@ -5,12 +5,13 @@ import { Chatting } from "./components/Chatting";
 import { GlobalStyle } from "./reset";
 
 function App() {
+  const [user, setUser] = useState("");
   return (
     <div>
       <GlobalStyle />
       <Reset />
-      <Greeting />
-      <Chatting />
+      <Greeting user={user} setUser={setUser} />
+      <Chatting user={user} />
     </div>
   );
 }
