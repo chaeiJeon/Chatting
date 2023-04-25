@@ -1,6 +1,8 @@
 import { stringify } from "querystring";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../constants/api";
+
 import {
   GreetingContainer,
   GreetingText,
@@ -12,6 +14,7 @@ type GreetingType = {
   setUser: React.Dispatch<React.SetStateAction<string>>;
 };
 export const Greeting = ({ user, setUser }: GreetingType) => {
+  const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("user : ", user);
@@ -26,7 +29,9 @@ export const Greeting = ({ user, setUser }: GreetingType) => {
     })
       .then((response) => response.json())
       .then((res) => {
-        console.log(res["data"]);
+        if (res.data === "success") {
+          navigate("/chat");
+        }
         return;
       });
   };
