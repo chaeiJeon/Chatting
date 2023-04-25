@@ -26,7 +26,6 @@ const _connect = async () => {
   await redisClient.connect();
 };
 const _publish = async (channel, message) => {
-  message = setMessageFormat(message);
   await publisher.publish(channel, message);
 };
 const _subscribe = async (channelName) => {
@@ -52,16 +51,6 @@ const sendMessageClient = async (channelName) => {
   for (const client of clients) {
     client.send(messageHistory);
   }
-};
-const setMessageFormat = (message) => {
-  const currentTime = new Date();
-  const result = JSON.stringify({
-    sender,
-    receiver,
-    contents: message,
-    currentTime,
-  });
-  return result;
 };
 module.exports = {
   setSender,

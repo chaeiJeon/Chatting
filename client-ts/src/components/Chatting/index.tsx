@@ -6,7 +6,8 @@ import {
   Input,
   SubmitButton,
   MessageContainer,
-  SentMessage,
+  Message,
+  WrapMessage,
 } from "./style";
 
 type ChattingType = {
@@ -17,10 +18,11 @@ type MessageType = {
   receiver: string;
   contents: string;
 };
+
 export const Chatting = ({ user }: ChattingType) => {
   const [input, setInput] = useState("");
   const [messageList, setMessageList] = useState<MessageType[]>([]);
-  const [selectedUser, setSelectedUser] = useState({});
+  const [receiver, setReceiver] = useState("saho");
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
@@ -28,28 +30,48 @@ export const Chatting = ({ user }: ChattingType) => {
     webSocket.onmessage = (event) => {
       console.log("onmessage : ", event.data);
       setMessageList((prev) => [...prev, JSON.parse(event.data)]);
-      // console.log(messageList[0].contents);
-      //   let _m = event.data;
-      //   for (let value of JSON.parse(event.data)) {
-      //     const { sender, recipient, message } = JSON.parse(value);
-      //     console.log(sender, " > ", recipient, " : ", message);
-      //   }
-      //   setMessage(_m);
     };
   }, [webSocket, messageList]);
   const sendMessage = () => {
-    s_send(input);
+    if (input === "") {
+      return;
+    }
+    const message = setMessageFormat({
+      sender: user,
+      receiver,
+      contents: input,
+    });
     setInput("");
+
+    s_send(message);
+  };
+  const setMessageFormat = ({ sender, receiver, contents }: MessageType) => {
+    const currentTime = new Date();
+    const result = JSON.stringify({
+      sender,
+      receiver,
+      contents,
+      currentTime,
+    });
+    return result;
   };
   return (
     <>
       <ChattingContainer id="chatting">
         <MessageContainer>
-          {messageList.map(({ sender, receiver, contents }) => (
-            <SentMessage>
-              {sender} {">"} {receiver} {">"} {contents}
-            </SentMessage>
-          ))}
+          {messageList.map(({ sender, receiver, contents }) =>
+            user === sender ? (
+              <WrapMessage type="send">
+                <Message type="send">{contents}</Message>
+              </WrapMessage>
+            ) : (
+              <WrapMessage type="receive">
+                {receiver}
+                <br />
+                <Message type="receive">{contents}</Message>
+              </WrapMessage>
+            )
+          )}
         </MessageContainer>
         <InputContainer>
           <Input name="input" onChange={(event) => handleChangeInput(event)} />

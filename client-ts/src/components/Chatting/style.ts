@@ -1,6 +1,5 @@
 import styled from "styled-components";
 export const ChattingContainer = styled.div`
-  height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -8,12 +7,19 @@ export const ChattingContainer = styled.div`
   overflow: hidden;
   justify-content: end;
   padding: 10px;
+
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
 `;
 export const InputContainer = styled.div`
   display: flex;
   gap: 7px;
 `;
 export const Input = styled.input`
+  height: 30px;
   background-color: transparent;
   border: none;
   color: #ffb824;
@@ -42,24 +48,35 @@ export const SubmitButton = styled.button`
   border-radius: 4px;
   color: black;
   width: 70px;
-  height: 25px;
+  height: 30px;
   font-size: 12px;
   padding-top: 3px;
   font-weight: bold;
 `;
 export const MessageContainer = styled.div`
+  height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: end;
   gap: 10px;
-`;
-export const Message = styled.div`
-  width: 100%;
   color: white;
 `;
-export const SentMessage = styled(Message)`
-  text-align: right;
+type WrapMessageType = {
+  type: "send" | "receive";
+};
+export const WrapMessage = styled.div<WrapMessageType>`
+  width: 100%;
+  text-align: ${({ type }) => (type === "send" ? "right" : "left")};
 `;
-export const ReceivedMessage = styled(Message)`
-  text-align: left;
+type MessageType = {
+  type: "send" | "receive";
+};
+export const Message = styled.div<MessageType>`
+  display: inline-block;
+  color: black;
+  background-color: ${({ type }) =>
+    type === "send" ? "white" : "rgb(255, 184, 36)"};
+  padding: 7px 10px;
+  border-radius: 5px;
 `;
