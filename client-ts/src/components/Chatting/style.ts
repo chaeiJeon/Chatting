@@ -53,6 +53,24 @@ export const SubmitButton = styled.button`
   padding-top: 3px;
   font-weight: bold;
 `;
+export const TopBar = styled.div`
+  display: flex;
+  padding: 30px;
+  justify-content: right;
+`;
+export const ExitButton = styled.div`
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  background-color: #b7b7b7;
+  color: #5d5d5d;
+  border-radius: 4px;
+  font-weight: bold;
+  padding: 0 10px;
+  cursor: pointer;
+`;
 export const MessageContainer = styled.div`
   height: 100vh;
   width: 100%;
