@@ -46,5 +46,5 @@ wss.on("error", function (error) {
 app.post("/username", (req, res) => {
   let { user } = req.body;
   setSender(user);
-  res.send({ data: "success" });
+  res.send({ data: clients.length });
 });
