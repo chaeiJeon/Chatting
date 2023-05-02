@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { webSocket, s_send } from "../../Socket/socket_client";
 import {
   ChattingContainer,
@@ -9,6 +10,8 @@ import {
   Message,
   WrapMessage,
   ReceiverName,
+  TopBar,
+  ExitButton,
 } from "./style";
 
 type ChattingType = {
@@ -24,6 +27,7 @@ export const Chatting = ({ user }: ChattingType) => {
   const [input, setInput] = useState("");
   const [messageList, setMessageList] = useState<MessageType[]>([]);
   const [receiver, setReceiver] = useState("");
+  const navigate = useNavigate();
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
@@ -62,6 +66,15 @@ export const Chatting = ({ user }: ChattingType) => {
   return (
     <>
       <ChattingContainer id="chatting">
+        <TopBar>
+          <ExitButton
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            채팅방 나가기
+          </ExitButton>
+        </TopBar>
         <MessageContainer>
           {messageList.map(({ sender, receiver, contents }, index) =>
             user === sender ? (

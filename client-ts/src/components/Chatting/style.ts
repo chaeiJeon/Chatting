@@ -85,3 +85,48 @@ export const SubmitButton = styled.button`
   font-size: 12px;
   font-weight: bold;
 `;
+export const TopBar = styled.div`
+  display: flex;
+  padding: 30px;
+  justify-content: right;
+`;
+export const ExitButton = styled.div`
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  background-color: #b7b7b7;
+  color: #5d5d5d;
+  border-radius: 4px;
+  font-weight: bold;
+  padding: 0 10px;
+  cursor: pointer;
+`;
+export const MessageContainer = styled.div`
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  gap: 10px;
+  color: white;
+`;
+type WrapMessageType = {
+  type: "send" | "receive";
+};
+export const WrapMessage = styled.div<WrapMessageType>`
+  width: 100%;
+  text-align: ${({ type }) => (type === "send" ? "right" : "left")};
+`;
+type MessageType = {
+  type: "send" | "receive";
+};
+export const Message = styled.div<MessageType>`
+  display: inline-block;
+  color: black;
+  background-color: ${({ type }) =>
+    type === "send" ? "white" : "rgb(255, 184, 36)"};
+  padding: 7px 10px;
+  border-radius: 5px;
+`;
