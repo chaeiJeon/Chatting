@@ -1,19 +1,52 @@
 import styled from "styled-components";
 export const ChattingContainer = styled.div`
   display: flex;
+  width: 100%;
+  max-width: 400px;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   background-color: black;
   overflow: hidden;
   justify-content: end;
-  padding: 10px;
+    padding: 20px 0px;
 
   position: fixed;
-  width: 100%;
   height: 100%;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
 `;
+export const MessageContainer = styled.div`
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: end;
+  gap: 6px;
+  color: white;
+`;
+type WrapMessageType = {
+  type: "send" | "receive";
+};
+export const WrapMessage = styled.div<WrapMessageType>`
+  width: 100%;
+  text-align: ${({ type }) => (type === "send" ? "right" : "left")};
+`;
+type MessageType = {
+  type: "send" | "receive";
+};
+export const Message = styled.div<MessageType>`
+  display: inline-block;
+  color: black;
+  background-color: ${({ type }) =>
+    type === "send" ? "white" : "rgb(255, 184, 36)"};
+  padding: 7px 10px;
+  border-radius: 5px;
+`;
+export const ReceiverName = styled.div`
+  padding: 0 0 5px 1px;
+`
 export const InputContainer = styled.div`
   display: flex;
   gap: 7px;
@@ -48,35 +81,7 @@ export const SubmitButton = styled.button`
   border-radius: 4px;
   color: black;
   width: 70px;
-  height: 30px;
+  height: 32px;
   font-size: 12px;
-  padding-top: 3px;
   font-weight: bold;
-`;
-export const MessageContainer = styled.div`
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  gap: 10px;
-  color: white;
-`;
-type WrapMessageType = {
-  type: "send" | "receive";
-};
-export const WrapMessage = styled.div<WrapMessageType>`
-  width: 100%;
-  text-align: ${({ type }) => (type === "send" ? "right" : "left")};
-`;
-type MessageType = {
-  type: "send" | "receive";
-};
-export const Message = styled.div<MessageType>`
-  display: inline-block;
-  color: black;
-  background-color: ${({ type }) =>
-    type === "send" ? "white" : "rgb(255, 184, 36)"};
-  padding: 7px 10px;
-  border-radius: 5px;
 `;
