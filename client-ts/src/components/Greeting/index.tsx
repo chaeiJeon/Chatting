@@ -22,7 +22,7 @@ export const Greeting = ({ user, setUser }: GreetingType) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("user : ", user);
-    fetch(`${API_URL}/username`, {
+    fetch(`${API_URL}/open`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +67,6 @@ export const Greeting = ({ user, setUser }: GreetingType) => {
               >
                 입력
               </Button>
-              {/* </Link> */}
             </form>
           </Item>
           <Item>
