@@ -2,6 +2,7 @@ import { stringify } from "querystring";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../constants/api";
+import { s_connect } from "../../Socket/socket_client";
 
 import {
   ItemContainer,
@@ -33,7 +34,10 @@ export const Greeting = ({ user, setUser }: GreetingType) => {
     })
       .then((response) => response.json())
       .then((res) => {
+        s_connect();
+        console.log(res.data);
         setUsersNumber(res.data);
+
         return;
       });
     setCurrentItemNum(1);

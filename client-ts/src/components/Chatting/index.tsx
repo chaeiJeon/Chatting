@@ -31,14 +31,16 @@ export const Chatting = ({ user }: ChattingType) => {
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
-  useEffect(()=>{
-    setReceiver(user)
-  },[])
   useEffect(() => {
-    webSocket.onmessage = (event) => {
-      console.log("onmessage : ", event.data);
-      setMessageList((prev) => [...prev, JSON.parse(event.data)]);
-    };
+    setReceiver(user);
+  }, []);
+  useEffect(() => {
+    if (webSocket) {
+      webSocket.onmessage = (event: { data: string }) => {
+        console.log("onmessage : ", event.data);
+        setMessageList((prev) => [...prev, JSON.parse(event.data)]);
+      };
+    }
   }, [webSocket, messageList]);
   const sendMessage = () => {
     if (input === "") {
@@ -83,16 +85,20 @@ export const Chatting = ({ user }: ChattingType) => {
               </WrapMessage>
             ) : (
               <WrapMessage type="receive">
-                {messageList[index-1].sender === user &&
-                <ReceiverName>{receiver}
-                  </ReceiverName>}
+                {messageList[index - 1].sender === user && (
+                  <ReceiverName>{receiver}</ReceiverName>
+                )}
                 <Message type="receive">{contents}</Message>
               </WrapMessage>
             )
           )}
         </MessageContainer>
         <InputContainer>
-          <Input name="input" value={input} onChange={(event) => handleChangeInput(event)} />
+          <Input
+            name="input"
+            value={input}
+            onChange={(event) => handleChangeInput(event)}
+          />
           <SubmitButton type="submit" onClick={sendMessage}>
             SUBMIT
           </SubmitButton>

@@ -14,14 +14,17 @@ app.listen(port_server);
 
 //redis
 const { _connect, _subscribe, setSender } = require("./redis");
-_connect();
+let channelNum = 0;
+let channelName = `channel:${channelNum}`;
 
 // api
-const WebSockeetServer = require("./WebSocketServer.ts");
-app.get("/open", (req, res) => {
+const WebSocketServer = require("./WebSocketServer.js");
+app.post("/open", (req, res) => {
   let { user } = req.body;
   setSender(user);
   _subscribe(channelName);
-  WebSockeetServer(1234);
+  let webSocketServer = new WebSocketServer(1234, channelName);
+  _connect();
+
   res.send({ data: clients.length });
 });
