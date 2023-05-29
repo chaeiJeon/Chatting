@@ -58,6 +58,7 @@ export const Chatting = ({ user }: ChattingType) => {
   const setMessageFormat = ({ sender, receiver, contents }: MessageType) => {
     const currentTime = new Date();
     const result = JSON.stringify({
+      action: "message",
       sender,
       receiver,
       contents,
