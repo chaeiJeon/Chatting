@@ -1,6 +1,6 @@
 const { WebSocket, Server: WebSocketS } = require("ws");
 const { _connect, _publish, _subscribe, setSender } = require("./redis");
-const clients = require("./clients");
+const clients_websocket = require("./clients_websocket");
 const uniqueIps = [];
 let wss = null;
 
@@ -14,8 +14,8 @@ class WebSocketServer {
   }
   init() {
     this.wss.on("connection", (ws, req) => {
-      clients.push(ws);
-      console.log("Connected total:", clients.length);
+      clients_websocket.push(ws);
+      console.log("Connected total:", clients_websocket.length);
 
       ws.on("message", (_message) => {
         _message = _message.toString();
@@ -24,8 +24,8 @@ class WebSocketServer {
       });
 
       this.wss.on("close", function (error) {
-        clients = new Set(
-          Array.from(clients).filter((client) => client !== ws)
+        clients_websocket = new Set(
+          Array.from(clients_websocket).filter((client) => client !== ws)
         );
         console.log("websever close", error);
       });

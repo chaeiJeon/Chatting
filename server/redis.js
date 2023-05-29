@@ -1,4 +1,4 @@
-const clients = require("./clients.js");
+const clients_websocket = require("./clients_websocket.js");
 
 const redis = require("redis");
 const config = {
@@ -32,7 +32,7 @@ const _subscribe = async (channelName) => {
   await subscriber_1.subscribe(channelName, async (_message) => {
     _pushMessageHistory(_message, channelName); //history에 메시지 push
     console.log("sub message : ", _message);
-    for (const client of clients) {
+    for (const client of clients_websocket) {
       client.send(_message);
     }
     // sendMessageClient(channelName); //client에 메시지 history 전달
@@ -48,7 +48,7 @@ const _pushMessageHistory = async (message, channelName) => {
 const sendMessageClient = async (channelName) => {
   messageHistory = await redisClient.lRange(channelName, 0, -1);
   messageHistory = JSON.stringify(messageHistory);
-  for (const client of clients) {
+  for (const client of clients_websocket) {
     client.send(messageHistory);
   }
 };
