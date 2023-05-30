@@ -26,14 +26,20 @@ _subscribe(channelName);
 app.post("/open", (req, res) => {
   let { user } = req.body;
   console.log(clients);
-  setSender(user);
-  clients.push(user);
-  _publish(
-    channelName,
-    JSON.stringify({
-      action: "addUser",
-      name: user,
-      clients: clients,
-    })
-  );
+  try {
+    setSender(user);
+    clients.push(user);
+    _publish(
+      channelName,
+      JSON.stringify({
+        action: "addUser",
+        name: user,
+        clients: clients,
+      })
+    );
+  } catch (exception) {
+    console.log(exception);
+    res.send({ result: "error" });
+  }
+  res.send({ result: "success" });
 });

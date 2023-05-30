@@ -15,10 +15,11 @@ export const Greeting = ({
   users,
   setCurrentItemNum,
 }: GreetingProps) => {
+  const [_user, _setUser] = useState("");
   const [isActive_w, setIsActive_w] = useState(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (users.find((_user) => _user === user)) {
+    if (users.find((v) => v === user)) {
       setIsActive_w(true);
       return;
     }
@@ -28,12 +29,12 @@ export const Greeting = ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user,
+        user: _user,
       }),
     })
       .then((response) => response.json())
       .then((res) => {
-        console.log(res.data);
+        if (res.result === "success") setUser(_user);
 
         return;
       });
@@ -41,7 +42,8 @@ export const Greeting = ({
     setIsActive_w(false);
   };
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUser(event.target.value);
+    _setUser(event.target.value);
+    console.log(_user);
     setIsActive_w(false);
   };
   return (
@@ -56,7 +58,7 @@ export const Greeting = ({
           type="text"
           onChange={(event) => handleChangeInput(event)}
           autoComplete="off"
-          value={user}
+          value={_user}
         />
         <Button
           backgroundColor="transparent"
