@@ -43,7 +43,6 @@ export const Greeting = ({
   };
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     _setUser(event.target.value);
-    console.log(_user);
     setIsActive_w(false);
   };
   return (

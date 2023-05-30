@@ -5,18 +5,23 @@ import { s_connect, s_send, webSocket } from "../../Socket/socket_client";
 import { Text, Button } from "../../styles/style";
 import { UserList, UserItem, UserIconWrapper } from "./style";
 import Icon from "../Image/Icon";
-import PushNotification from "../PushNotification";
 type LobbyProps = {
   user: string;
   users: string[];
   setUsers: React.Dispatch<React.SetStateAction<string[]>>;
   setCurrentItemNum: React.Dispatch<React.SetStateAction<number>>;
+  isActive_PN: boolean;
+  setIsActive_PN: React.Dispatch<React.SetStateAction<boolean>>;
+  setSender: React.Dispatch<React.SetStateAction<string>>;
 };
 export const Lobby = ({
   user,
   users,
   setUsers,
   setCurrentItemNum,
+  isActive_PN,
+  setIsActive_PN,
+  setSender,
 }: LobbyProps) => {
   const [selectedUser, setSelectedUser] = useState("");
   const navigate = useNavigate();
@@ -42,12 +47,13 @@ export const Lobby = ({
             break;
           case "requestChat":
             if (receiver === user) {
-              alert("요청에 응하시겠습니까?");
+              setIsActive_PN(true);
+              setSender(sender);
             }
         }
       };
     }
-  }, [webSocket]);
+  }, [webSocket, user]);
   const handleSubmit = () => {
     const currentTime = new Date();
     const message = JSON.stringify({
@@ -114,7 +120,6 @@ export const Lobby = ({
           요청하기
         </Button>
       </div>
-      <PushNotification />
     </>
   );
 };

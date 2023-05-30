@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import { Button as _Button } from "../../styles/style";
-export const Container = styled.div`
+type ContainerType = {
+  isActive: boolean;
+};
+export const Container = styled.div<ContainerType>`
   position: fixed;
   top: 10px;
-  right: 10px;
+  right: ${({ isActive }) => (isActive ? "10px" : "-230px")};
   width: 200px;
   display: flex;
   flex-direction: column;
@@ -11,6 +14,7 @@ export const Container = styled.div`
   background-color: rgba(255, 255, 255, 0.3);
   padding: 15px;
   border-radius: 10px;
+  transition: all 1s;
 `;
 export const Title = styled.div`
   font-size: 14px;
@@ -18,6 +22,7 @@ export const Title = styled.div`
 `;
 export const Contents = styled.div`
   font-size: 14px;
+  color: rgb(255, 184, 36);
 `;
 export const ButtonContainer = styled.div`
   display: flex;
