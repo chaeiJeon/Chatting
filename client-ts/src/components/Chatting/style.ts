@@ -103,30 +103,3 @@ export const ExitButton = styled.div`
   padding: 0 10px;
   cursor: pointer;
 `;
-export const MessageContainer = styled.div`
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  gap: 10px;
-  color: white;
-`;
-type WrapMessageType = {
-  type: "send" | "receive";
-};
-export const WrapMessage = styled.div<WrapMessageType>`
-  width: 100%;
-  text-align: ${({ type }) => (type === "send" ? "right" : "left")};
-`;
-type MessageType = {
-  type: "send" | "receive";
-};
-export const Message = styled.div<MessageType>`
-  display: inline-block;
-  color: black;
-  background-color: ${({ type }) =>
-    type === "send" ? "white" : "rgb(255, 184, 36)"};
-  padding: 7px 10px;
-  border-radius: 5px;
-`;
