@@ -8,7 +8,7 @@ export const ChattingContainer = styled.div`
   background-color: black;
   overflow: hidden;
   justify-content: end;
-    padding: 20px 0px;
+  padding: 20px 0px;
 
   position: fixed;
   height: 100%;
@@ -46,7 +46,7 @@ export const Message = styled.div<MessageType>`
 `;
 export const ReceiverName = styled.div`
   padding: 0 0 5px 1px;
-`
+`;
 export const InputContainer = styled.div`
   display: flex;
   gap: 7px;

@@ -1,4 +1,4 @@
-export const webSocket = new WebSocket("ws://localhost:1234/ws");
+export const webSocket = new WebSocket("ws://52.78.209.184:1234/ws");
 
 export const s_send = (data: string) => {
   if (webSocket.readyState === webSocket.OPEN) {
