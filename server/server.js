@@ -33,6 +33,8 @@ app.post("/open", (req, res) => {
       channelName,
       JSON.stringify({
         action: "addUser",
+        sender: user,
+        receiver: "all",
         name: user,
         clients: clients,
       })
