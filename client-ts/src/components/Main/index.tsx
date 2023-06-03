@@ -13,6 +13,7 @@ export const Main = ({ user, setUser }: MainProps) => {
   const [currentItemNum, setCurrentItemNum] = useState(0);
   const [isActive_PN, setIsActive_PN] = useState(false);
   const [sender, setSender] = useState("");
+  //주스탠드 리코일로 전역관리 해보기
   return (
     <>
       <MainContainer>
@@ -38,7 +39,7 @@ export const Main = ({ user, setUser }: MainProps) => {
           </Item>
         </ItemContainer>
       </MainContainer>
-      <PushNotification sender={sender} isActive={isActive_PN} />
+      <PushNotification user={user} sender={sender} isActive={isActive_PN} />
     </>
   );
 };
