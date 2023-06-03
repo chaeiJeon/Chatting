@@ -41,15 +41,28 @@ export const Lobby = ({
           clients = [],
           currentTime,
         } = JSON.parse(event.data);
-        switch (action) {
-          case "addUser":
-            setUsers(() => [...clients]);
-            break;
-          case "requestChat":
-            if (receiver === user) {
+
+        if (receiver === user || receiver === "all") {
+          switch (action) {
+            case "addUser":
+              setUsers(() => [...clients]);
+              break;
+            case "requestChat":
               setIsActive_PN(true);
               setSender(sender);
-            }
+              break;
+            case "acceptChat":
+              navigate("/chat");
+              break;
+            case "rejectChat":
+              setIsActive_PN(true);
+              break;
+            default:
+              // 기본 동작
+              break;
+          }
+        } else {
+          console.log("not my message");
         }
       };
     }
