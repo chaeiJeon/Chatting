@@ -5,23 +5,22 @@ import { s_connect, s_send, webSocket } from "../../Socket/socket_client";
 import { Text, Button } from "../../styles/style";
 import { UserList, UserItem, UserIconWrapper } from "./style";
 import Icon from "../Image/Icon";
+import { PushNotificiatonForm } from "../Main";
 type LobbyProps = {
   user: string;
   users: string[];
   setUsers: React.Dispatch<React.SetStateAction<string[]>>;
   setCurrentItemNum: React.Dispatch<React.SetStateAction<number>>;
-  isActive_PN: boolean;
-  setIsActive_PN: React.Dispatch<React.SetStateAction<boolean>>;
-  setSender: React.Dispatch<React.SetStateAction<string>>;
+  setPushNotificationForm: React.Dispatch<
+    React.SetStateAction<PushNotificiatonForm>
+  >;
 };
 export const Lobby = ({
   user,
   users,
   setUsers,
   setCurrentItemNum,
-  isActive_PN,
-  setIsActive_PN,
-  setSender,
+  setPushNotificationForm,
 }: LobbyProps) => {
   const [selectedUser, setSelectedUser] = useState("");
   const navigate = useNavigate();
@@ -48,14 +47,28 @@ export const Lobby = ({
               setUsers(() => [...clients]);
               break;
             case "requestChat":
-              setIsActive_PN(true);
-              setSender(sender);
+              setPushNotificationForm({
+                sender,
+                type: "choice",
+                isActive: true,
+              });
               break;
             case "acceptChat":
+              setPushNotificationForm({
+                sender,
+                type: "alert",
+                alertResponse: "accept",
+                isActive: true,
+              });
               navigate("/chat");
               break;
             case "rejectChat":
-              setIsActive_PN(true);
+              setPushNotificationForm({
+                sender,
+                isActive: true,
+                type: "alert",
+                alertResponse: "reject",
+              });
               break;
             default:
               // 기본 동작

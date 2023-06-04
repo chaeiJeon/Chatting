@@ -8,11 +8,27 @@ type MainProps = {
   user: string;
   setUser: React.Dispatch<React.SetStateAction<string>>;
 };
+export type PushNotificiatonForm = {
+  isActive: boolean;
+  sender: string;
+} & (
+  | {
+      type: "alert";
+      alertResponse: "accept" | "reject";
+    }
+  | {
+      type: "choice";
+    }
+);
 export const Main = ({ user, setUser }: MainProps) => {
   const [users, setUsers] = useState<string[]>([]);
   const [currentItemNum, setCurrentItemNum] = useState(0);
-  const [isActive_PN, setIsActive_PN] = useState(false);
-  const [sender, setSender] = useState("");
+  const [pushNotificationForm, setPushNotificationForm] =
+    useState<PushNotificiatonForm>({
+      sender: "",
+      type: "choice",
+      isActive: false,
+    });
   //주스탠드 리코일로 전역관리 해보기
   return (
     <>
@@ -32,14 +48,12 @@ export const Main = ({ user, setUser }: MainProps) => {
               users={users}
               setUsers={setUsers}
               setCurrentItemNum={setCurrentItemNum}
-              isActive_PN={isActive_PN}
-              setIsActive_PN={setIsActive_PN}
-              setSender={setSender}
+              setPushNotificationForm={setPushNotificationForm}
             />
           </Item>
         </ItemContainer>
       </MainContainer>
-      <PushNotification user={user} sender={sender} isActive={isActive_PN} />
+      <PushNotification form={pushNotificationForm} user={user} />
     </>
   );
 };
